@@ -1,0 +1,103 @@
+/* Osnovni stilovi i boje */
+body {
+  background-image: url(../img/back.jpeg);
+  background-size: cover; /* Slika se prilagođava veličini ekrana */
+  background-attachment: fixed;
+  /* background-color: #0b0e14; Tamna pozadina */
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+h1 {
+  color: #00ff87; /* Gejmerska zelena */
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Stil za pretragu */
+.search-box {
+  margin-top: 20px;
+}
+
+input {
+  padding: 10px 15px;
+  width: 250px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #00ff87;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #00cc6a;
+}
+
+/* Grid sistem za kartice */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Stil kartice */
+.game-card {
+  background-color: #1a1f26;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  border: 1px solid #333;
+}
+
+.game-card:hover {
+  transform: translateY(-10px);
+  border-color: #00ff87;
+}
+
+.game-card img {
+  width: 100%;
+  height: 180px;
+
+  object-fit: cover; /* Sprečava rastezanje slike */
+}
+
+.game-info {
+  padding: 15px;
+}
+
+.game-info h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.1rem;
+}
+
+.rating {
+  color: #ffcc00;
+  font-weight: bold;
+}
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.hidden {
+  display: none;
+}

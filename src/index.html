@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="sr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gaming Platforma</title>
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="controller.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>GameDex</h1>
+      <form class="search-box">
+        <input type="text" id="searchInput" placeholder="Pretraži igre..." />
+        <button id="searchBtn">Traži</button>
+      </form>
+    </header>
+
+    <main>
+      <div class="controls">
+        <button class="sort-btn" data-sort="name">Sortiraj A-Z ↓</button>
+      </div>
+      <div id="game-container" class="game-grid">
+        <p class="loading-msg"></p>
+      </div>
+      <div class="pagination-container">
+        <!-- <button id="prevBtn" class="nav-btn">Prethodna</button>
+        <span id="pageNumber">Strana 1</span>
+        <button id="nextBtn" class="nav-btn">Sledeća</button> -->
+      </div>
+    </main>
+  </body>
+</html>
