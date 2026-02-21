@@ -1,4 +1,4 @@
-note_modules/
-.env
+node_module/
 dist/
-.cache/
+.parcel-cache/
+.env
