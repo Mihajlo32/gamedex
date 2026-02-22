@@ -64,6 +64,7 @@ button:hover {
   overflow: hidden;
   transition: transform 0.3s ease;
   border: 1px solid #333;
+  /* position: relative; */
 }
 
 .game-card:hover {
@@ -100,4 +101,94 @@ button:hover {
 
 .hidden {
   display: none;
+}
+/* Pozadina koja prekriva sve */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Polu-providna crna */
+  backdrop-filter: blur(8px); /* GLAVNI TRIK: Ovo blura sve ispod */
+  z-index: 100;
+  transition: all 0.4s;
+}
+
+/* Sam prozor sa detaljima */
+.game-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  max-width: 900px;
+  background-color: #1a1a1a;
+  color: white;
+  border-radius: 15px;
+  padding: 2rem;
+  z-index: 101; /* Mora biti veći od overlay-a */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  max-height: 85vh;
+  overflow-y: auto; /* Da možeš da skroluješ ako je opis dugačak */
+}
+
+.modal-img {
+  width: 100%; /* Širina slike će uvek biti 100% širine modala */
+  max-height: 400px; /* Ograničavamo visinu da slika ne pojede ceo ekran */
+  object-fit: cover; /* Ovo je ključno: slika će se crop-ovati da popuni prostor bez razvlačenja */
+  border-radius: 10px; /* Blago zaobljene ivice da prati dizajn */
+  display: block; /* Uklanja prazan prostor ispod slike */
+  margin-bottom: 15px;
+}
+
+.btn-close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 2.5rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+.btn-bookmark {
+  /* position: absolute;
+  bottom: 10px;
+  right: 10px; */
+
+  background-color: #1a1f26;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  color: white;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.btn-bookmark:hover {
+  transform: scale(1.1);
+  background-color: white;
+  color: #1a1f26;
+}
+
+/* Klasa koja će se dodati kada je igra bukmarkovana */
+.btn-bookmark--active {
+  color: #ff4757; /* Crvena ili zlatna boja */
+}
+.modal-info {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 15px;
+}
+.acctive-bookmark {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  color: #1a1f26;
 }

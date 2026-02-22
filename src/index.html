@@ -3,6 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="../img/Gemini_Generated_Image_mpoeaympoeaympoe.png"
+    />
+
     <title>Gaming Platforma</title>
     <link rel="stylesheet" href="style.css" />
     <script type="module" src="controller.js"></script>
@@ -19,6 +26,11 @@
     <main>
       <div class="controls">
         <button class="sort-btn" data-sort="name">Sortiraj A-Z ↓</button>
+        <div class="bockmark">
+          <button id="bookmarkBtn">
+            <i class="ph-bookmark-simple"></i> Moje omiljene igre
+          </button>
+        </div>
       </div>
       <div id="game-container" class="game-grid">
         <p class="loading-msg"></p>
@@ -28,6 +40,7 @@
         <span id="pageNumber">Strana 1</span>
         <button id="nextBtn" class="nav-btn">Sledeća</button> -->
       </div>
+      <div class="details-container"></div>
     </main>
   </body>
 </html>

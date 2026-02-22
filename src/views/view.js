@@ -1,7 +1,10 @@
+import { state } from "../model";
+
 class View {
   _perentEl = document.querySelector("#game-container");
   _paginationEl = document.querySelector(".pagination-container");
   _searchEl = document.querySelector(".search-box");
+
   _errorMessage = "No games found. Please try a different search.";
   _data;
   render(data, page, totalPages) {
@@ -54,13 +57,18 @@ class View {
   _generateMarjup(igra) {
     return igra
       .map((igra) => {
-        return ` <div class="game-card">
+        return ` <div class="game-card" data-id="${igra.id}">
         
                       <img src="${this._optimizeImageUrl(igra.background_image) || "https://via.placeholder.com/250"}" alt="">
                       <div class="game-info">
                           <h3>${igra.name}</h3>
                           <p class="rating">Ocena: ${igra.rating} ⭐</p>
+                         <button class="btn-bookmark">
+                                    
+
+                         </button>
                       </div>
+                     
                   </div>`;
       })
       .join("");
@@ -102,11 +110,66 @@ class View {
   handlerSort(handler) {
     const sortBtn = document.querySelector(".sort-btn");
     if (!sortBtn) return;
-    console.log(sortBtn);
+
     sortBtn.addEventListener("click", function () {
       handler();
     });
   }
-}
 
+  _generateDetailsMarjup(game) {
+    return `<div class="overlay"></div> <div class="game-modal">
+      <button class="btn-close-modal">&times;</button>
+      <div class="modal-content" data-id="${game.id}">
+        <img src="${game.background_image}" class="modal-img" />
+        <div class="modal-data">
+          <h1>${game.name}</h1>
+          <div class="modal-description">${game.description}</div>
+          <div class="modal-info">
+             <span>Rating: ⭐${game.rating}</span>
+             <span>Released: ${game.released}</span>
+             
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  renderGameDetails(game) {
+    const detailsContainer = document.querySelector(".details-container");
+    const markup = this._generateDetailsMarjup(game);
+    detailsContainer.innerHTML = markup;
+  }
+
+  addHandelrDetails(handler) {
+    this._perentEl.addEventListener("click", function (e) {
+      const card = e.target.closest(".game-card");
+      if (!card) return;
+
+      const gameId = card.dataset.id;
+      handler(gameId);
+    });
+  }
+
+  addHandlerCloseModal(handler) {
+    const detailsContainer = document.querySelector(".details-container");
+    detailsContainer.addEventListener("click", function (e) {
+      const btnClose = e.target.closest(".btn-close-modal");
+      const overlay = e.target.closest(".overlay");
+      if (btnClose || overlay) {
+        handler();
+      }
+    });
+
+    window.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        handler();
+      }
+    });
+  }
+
+  clearGameDetails() {
+    const detailsContainer = document.querySelector(".details-container");
+    detailsContainer.innerHTML = "";
+  }
+}
 export default new View();

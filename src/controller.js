@@ -63,11 +63,30 @@ const controlSort = function () {
   );
 };
 
+const controlGameDetails = async function (gameId) {
+  try {
+    await model.getGameDetails(gameId);
+
+    view.renderGameDetails(model.state.activeGame);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const controlCloseModal = function () {
+  model.state.activeGame = null;
+
+  view.clearGameDetails();
+};
+
 const init = function () {
   controller();
   view.bindPaginationHandler(controllerPagination);
   view.bindSearchHandler(searchController);
 
   view.handlerSort(controlSort);
+
+  view.addHandelrDetails(controlGameDetails);
+  view.addHandlerCloseModal(controlCloseModal);
 };
 init();

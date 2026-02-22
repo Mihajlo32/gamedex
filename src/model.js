@@ -8,6 +8,8 @@ export const state = {
   resultsPerPage: 32,
   games: [],
   originalGames: [],
+  activeGame: null,
+  bookmarks: [],
 };
 
 export const getGames = async function (page = 1) {
@@ -46,15 +48,6 @@ export const searchGames = async function (query, page = 1) {
   }
 };
 
-// export const sortGamesLocally = function () {
-//   // Sortiramo state.games niz po imenu (A-Z)
-//   state.games.sort((a, b) => {
-//     if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
-//     if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
-//     return 0;
-//   });
-// };
-
 export const sortGames = function (isSorted) {
   if (isSorted) {
     state.games = [...state.originalGames];
@@ -64,5 +57,18 @@ export const sortGames = function (isSorted) {
       if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
       return 0;
     });
+  }
+};
+
+export const getGameDetails = async function (gameId) {
+  try {
+    const response = await fetch(
+      `https://api.rawg.io/api/games/${gameId}?key=${API_KEY}`,
+    );
+    if (!response.ok) throw new Error("Failed to fetch game details");
+    const data = await response.json();
+    state.activeGame = data;
+  } catch (err) {
+    console.error(err);
   }
 };
