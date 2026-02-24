@@ -153,30 +153,37 @@ button:hover {
   color: white;
   cursor: pointer;
 }
+
 .btn-bookmark {
   /* position: absolute;
   bottom: 10px;
   right: 10px; */
 
   background-color: #1a1f26;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  color: white;
   border-radius: 50%;
-  width: 35px;
-  height: 35px;
+  color: white;
+  border: 1px solid white;
+
+  width: 30px;
+  height: 30px;
   cursor: pointer;
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s;
+  overflow: hidden;
 }
 
-.btn-bookmark:hover {
+svg {
+  width: 50px;
+}
+
+/* .btn-bookmark:hover {
   transform: scale(1.1);
   background-color: white;
   color: #1a1f26;
-}
+} */
 
 /* Klasa koja će se dodati kada je igra bukmarkovana */
 .btn-bookmark--active {
@@ -263,4 +270,10 @@ button:hover {
   animation: remove-el 0.5s forwards;
   pointer-events: none;
   overflow: hidden;
+}
+.controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: start;
 }

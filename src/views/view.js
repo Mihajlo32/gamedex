@@ -88,10 +88,8 @@ class View {
                       <div class="game-info">
                           <h3>${igra.name}</h3>
                           <p class="rating">Ocena: ${igra.rating} ⭐</p>
-                         <button class="btn-bookmark ${igra.isBookmarked ? "acctive" : ""} ">
-                                    
-b
-                         </button>
+                         <button class= "btn-bookmark ${igra.isBookmarked ? "acctive" : ""}">${igra.isBookmarked ? "📖" : "📘"}</button>
+
                       </div>
                      
                   </div>`;
@@ -170,6 +168,7 @@ b
       if (e.target.classList.contains("btn-bookmark")) {
         return;
       }
+
       const card = e.target.closest(".game-card");
       if (!card) return;
 
@@ -183,6 +182,9 @@ b
     detailsContainer.addEventListener("click", function (e) {
       const btnClose = e.target.closest(".btn-close-modal");
       const overlay = e.target.closest(".overlay");
+
+      e.stopImmediatePropagation();
+      e.preventDefault();
       if (btnClose || overlay) {
         handler();
       }
