@@ -4,9 +4,11 @@ class View {
   _perentEl = document.querySelector("#game-container");
   _paginationEl = document.querySelector(".pagination-container");
   _searchEl = document.querySelector(".search-box");
+  _bookmarkEl = document.querySelector(".bookmarks__list");
 
   _errorMessage = "No games found. Please try a different search.";
   _data;
+
   render(data, page, totalPages) {
     if (!data || (Array.isArray(data) && data.length === 0))
       return this.renderError();
@@ -16,6 +18,28 @@ class View {
     this.clear();
     this._perentEl.insertAdjacentHTML("afterbegin", html);
     this._renderPagination(page, totalPages);
+  }
+
+  update(data) {
+    this._data = data;
+    const newHtml = this._generateMarjup(this._data);
+    const newDom = document.createRange().createContextualFragment(newHtml);
+    const newElement = Array.from(newDom.querySelectorAll("*"));
+    const curElement = Array.from(this._perentEl.querySelectorAll("*"));
+    newElement.forEach((newEl, i) => {
+      const curEl = curElement[i];
+      if (
+        !newEl.isEqualNode(curEl) &&
+        newEl.firstChild?.nodeValue.trim() !== ""
+      ) {
+        curEl.textContent = newEl.textContent;
+      }
+      if (!newEl.isEqualNode(curEl)) {
+        Array.from(newEl.attributes).forEach((attr) =>
+          curEl.setAttribute(attr.name, attr.value),
+        );
+      }
+    });
   }
 
   clear() {
@@ -56,6 +80,7 @@ class View {
 
   _generateMarjup(igra) {
     return igra
+
       .map((igra) => {
         return ` <div class="game-card" data-id="${igra.id}">
         
@@ -63,9 +88,9 @@ class View {
                       <div class="game-info">
                           <h3>${igra.name}</h3>
                           <p class="rating">Ocena: ${igra.rating} ⭐</p>
-                         <button class="btn-bookmark">
+                         <button class="btn-bookmark ${igra.isBookmarked ? "acctive" : ""} ">
                                     
-
+b
                          </button>
                       </div>
                      
@@ -142,6 +167,9 @@ class View {
 
   addHandelrDetails(handler) {
     this._perentEl.addEventListener("click", function (e) {
+      if (e.target.classList.contains("btn-bookmark")) {
+        return;
+      }
       const card = e.target.closest(".game-card");
       if (!card) return;
 
@@ -170,6 +198,108 @@ class View {
   clearGameDetails() {
     const detailsContainer = document.querySelector(".details-container");
     detailsContainer.innerHTML = "";
+  }
+
+  addHandelrBookmark(handler) {
+    this._perentEl.addEventListener("click", function (e) {
+      const bookmarkBtn = e.target.closest(".btn-bookmark");
+      if (!bookmarkBtn) return;
+
+      e.stopPropagation(); // Sprečava da se klik na bookmark dugme tretira kao klik na kartu igre
+      e.preventDefault();
+      const gameCard = bookmarkBtn.closest(".game-card");
+      const gameId = gameCard.dataset.id;
+
+      handler(gameId);
+    });
+  }
+
+  _generateBookmarkMarkap(data) {
+    return data
+      .map(
+        (game) =>
+          `<div class="bookmark-item" data-id="${game.id}">
+        <div class="game--name">
+          <img src="${game.background_image}" width="100" alt="${game.name}">
+          <div class="bookmark-info">
+            <h4>${game.name}</h4>
+          </div>
+          </div>
+          <button class="btn-remove-bookmark" data-id="${game.id}">
+             <i class="ph-trash">X</i>
+          </button>
+        </div>
+      `,
+      )
+      .join("");
+  }
+
+  renderBookmarks(data) {
+    const markup = this._generateBookmarkMarkap(data);
+    this._bookmarkEl.innerHTML = markup;
+  }
+
+  addHandlerShowBookmarks(handler) {
+    const bookmarkBtn = document.querySelector("#bookmarkBtn");
+    if (!bookmarkBtn) return;
+    bookmarkBtn.addEventListener("click", function () {
+      const bookmarkWindow = document.querySelector(".bookmarks-overlay");
+      bookmarkWindow.classList.remove("hidden");
+      handler();
+    });
+  }
+
+  addHandlerCloseBookmark(handler) {
+    const book = document.querySelector(".bookmark--container");
+    book.addEventListener("click", function (e) {
+      const btn = e.target.closest(".btn--close-bookmarks");
+      if (!btn) return;
+
+      handler();
+    });
+
+    const over = document.querySelector(".bookmarks-overlay");
+    over.addEventListener("click", function (e) {
+      if (e.target.classList.contains("bookmarks-overlay")) handler();
+    });
+
+    window.addEventListener("keydown", function (e) {
+      const over = document.querySelector(".bookmarks-overlay");
+      // Zatvaraj samo ako prozor NIJE sakriven
+      if (e.key === "Escape" && !over.classList.contains("hidden")) {
+        handler();
+      }
+    });
+  }
+
+  clearBookmark() {
+    const over = document.querySelector(".bookmarks-overlay");
+    over.classList.add("hidden");
+  }
+
+  addHandlerRemoveFromBookmarkList(handler) {
+    this._bookmarkEl.addEventListener("click", function (e) {
+      const remove = e.target.closest(".btn-remove-bookmark");
+      if (!remove) return;
+
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      const bookmarkItem = e.target.closest(".bookmark-item");
+      bookmarkItem.classList.add("remove");
+
+      const id = bookmarkItem.dataset.id;
+
+      handler(id);
+    });
+  }
+
+  addHandlerClickBook(handler) {
+    this._bookmarkEl.addEventListener("click", function (e) {
+      const bookGame = e.target.closest(".bookmark-item");
+      if (!bookGame) return;
+      const id = bookGame.dataset.id;
+      handler(id);
+    });
   }
 }
 export default new View();

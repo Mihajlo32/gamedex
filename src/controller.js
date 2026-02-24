@@ -4,7 +4,9 @@ let isSort = false;
 const controller = async function (goToPage = 1) {
   isSort = false; // Resetiraj sortiranje prilikom inicijalnog učitavanja
   await model.getGames(goToPage);
+
   // console.log(model.games);
+
   view.render(
     model.state.games,
     model.state.currentPage,
@@ -15,11 +17,12 @@ const controller = async function (goToPage = 1) {
 
 const searchController = async function (goToPage = 1) {
   try {
+    // Učitaj sve igre da bismo mogli da označimo koje su bookmarkovane
     const query = view.getQuery();
     if (!query) return;
 
     await model.searchGames(query, goToPage);
-    console.log(model.state.games);
+
     view.render(
       model.state.games,
       model.state.currentPage,
@@ -79,6 +82,32 @@ const controlCloseModal = function () {
   view.clearGameDetails();
 };
 
+const controlBookmark = function (gameId) {
+  if (!model.state.bookmarks.some((b) => b.id === +gameId)) {
+    const game = model.state.games.find((g) => g.id === +gameId);
+    model.addBookmark(game);
+  } else {
+    model.removeBookmark(+gameId);
+  }
+  view.update(model.state.games);
+
+  view.renderBookmarks(model.state.bookmarks);
+};
+
+const controlShowBookmarks = function () {
+  view.renderBookmarks(model.state.bookmarks);
+};
+
+const controllCloseBook = function () {
+  view.clearBookmark();
+};
+
+const controllerRemoveBookFormList = function (id) {
+  model.removeBookmark(id);
+  view.update(model.state.bookmarks);
+  view.update(model.state.games);
+};
+
 const init = function () {
   controller();
   view.bindPaginationHandler(controllerPagination);
@@ -88,5 +117,11 @@ const init = function () {
 
   view.addHandelrDetails(controlGameDetails);
   view.addHandlerCloseModal(controlCloseModal);
+  view.addHandelrBookmark(controlBookmark);
+
+  view.addHandlerShowBookmarks(controlShowBookmarks);
+  view.addHandlerCloseBookmark(controllCloseBook);
+  view.addHandlerRemoveFromBookmarkList(controllerRemoveBookFormList);
+  view.addHandlerClickBook(controlGameDetails);
 };
 init();

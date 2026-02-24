@@ -21,7 +21,13 @@ export const getGames = async function (page = 1) {
     if (!response.ok) throw new Error("Failed to fetch games data");
     const data = await response.json();
 
-    state.games = data.results;
+    state.games = data.results.map((game) => {
+      return {
+        ...game,
+
+        isBookmarked: state.bookmarks.some((b) => b.id === game.id),
+      };
+    });
     state.originalGames = [...data.results]; // Čuvamo originalne podatke za lokalno sortiranje
 
     state.totalPages = Math.ceil(data.count / state.resultsPerPage);
@@ -40,7 +46,14 @@ export const searchGames = async function (query, page = 1) {
     if (!response.ok) throw new Error("Failed to fetch search results");
     const data = await response.json();
 
-    state.games = data.results;
+    state.games = data.results.map((game) => {
+      return {
+        ...game,
+
+        isBookmarked: state.bookmarks.some((b) => b.id === game.id),
+      };
+    });
+
     state.originalGames = [...data.results]; // Čuvamo originalne podatke za lokalno sortiranje
     state.totalPages = Math.ceil(data.count / state.resultsPerPage);
   } catch (err) {
@@ -72,3 +85,35 @@ export const getGameDetails = async function (gameId) {
     console.error(err);
   }
 };
+
+const persistBookmarks = function () {
+  localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
+};
+
+export const addBookmark = function (game) {
+  state.bookmarks.push(game);
+
+  const gameInState = state.games.find((g) => g.id === game.id);
+  if (gameInState) {
+    gameInState.isBookmarked = true;
+  }
+  persistBookmarks();
+};
+
+export const removeBookmark = function (gameId) {
+  const index = state.bookmarks.findIndex((b) => b.id === +gameId);
+  state.bookmarks.splice(index, 1);
+
+  const gameInState = state.games.find((g) => g.id === +gameId);
+  if (gameInState) {
+    gameInState.isBookmarked = false;
+  }
+  persistBookmarks();
+};
+
+const init = function () {
+  const storage = localStorage.getItem("bookmarks");
+  if (storage) state.bookmarks = JSON.parse(storage);
+};
+
+init();

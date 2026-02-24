@@ -27,8 +27,8 @@
       <div class="controls">
         <button class="sort-btn" data-sort="name">Sortiraj A-Z ↓</button>
         <div class="bockmark">
-          <button id="bookmarkBtn">
-            <i class="ph-bookmark-simple"></i> Moje omiljene igre
+          <button class="btn--bookmark--show" id="bookmarkBtn">
+            <i class="ph-bookmark-simple"></i>Bookmarkovi
           </button>
         </div>
       </div>
@@ -41,6 +41,15 @@
         <button id="nextBtn" class="nav-btn">Sledeća</button> -->
       </div>
       <div class="details-container"></div>
+      <div class="bookmark--container">
+        <div class="bookmarks-overlay hidden">
+          <div class="bookmarks-window">
+            <button class="btn--close-bookmarks">&times;</button>
+            <h2>Tvoji Bukmarkovi</h2>
+            <div class="bookmarks__list"></div>
+          </div>
+        </div>
+      </div>
     </main>
   </body>
 </html>
