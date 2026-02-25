@@ -36,8 +36,8 @@ const searchController = async function (goToPage = 1) {
 const controllerPagination = async function (goToPage) {
   try {
     isSort = false; // Resetiraj sortiranje prilikom promene stranice
-    if (model.state.query) {
-      await model.searchGames(model.state.query, goToPage);
+    if (model.state.search.query) {
+      await model.searchGames(model.state.search.query, goToPage);
     } else {
       await model.getGames(goToPage);
     }
@@ -64,6 +64,23 @@ const controlSort = function () {
     model.state.currentPage,
     model.state.totalPages,
   );
+};
+
+const controlSortRating = async function () {
+  try {
+    model.state.search.sortRating = !model.state.search.sortRating;
+
+    model.state.currentPage = 1;
+
+    await model.getGames();
+    view.render(
+      model.state.games,
+      model.state.currentPage,
+      model.state.totalPages,
+    );
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const controlGameDetails = async function (gameId) {
@@ -123,5 +140,6 @@ const init = function () {
   view.addHandlerCloseBookmark(controllCloseBook);
   view.addHandlerRemoveFromBookmarkList(controllerRemoveBookFormList);
   view.addHandlerClickBook(controlGameDetails);
+  view.addHandlerSortByRating(controlSortRating);
 };
 init();

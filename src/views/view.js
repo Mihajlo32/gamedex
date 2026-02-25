@@ -173,6 +173,7 @@ class View {
       if (!card) return;
 
       const gameId = card.dataset.id;
+      document.body.classList.add("stop-scrolling");
       handler(gameId);
     });
   }
@@ -186,12 +187,16 @@ class View {
       e.stopImmediatePropagation();
       e.preventDefault();
       if (btnClose || overlay) {
+        document.body.classList.remove("stop-scrolling");
+
         handler();
       }
     });
 
     window.addEventListener("keydown", function (e) {
       if (e.key === "Escape") {
+        document.body.classList.remove("stop-scrolling");
+
         handler();
       }
     });
@@ -301,6 +306,15 @@ class View {
       if (!bookGame) return;
       const id = bookGame.dataset.id;
       handler(id);
+    });
+  }
+
+  addHandlerSortByRating(handler) {
+    const brtSortRating = document.querySelector(".sort--rating");
+    if (!brtSortRating) return;
+    brtSortRating.addEventListener("click", function (e) {
+      e.preventDefault();
+      handler();
     });
   }
 }

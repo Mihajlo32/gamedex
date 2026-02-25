@@ -1,7 +1,13 @@
 const API_KEY = "943c7e5ad518433491f0d3028d732a1f";
+import { getJSON } from "./halpers";
 
 export const state = {
-  query: "",
+  search: {
+    query: "",
+    results: [],
+    page: 1,
+    sortRating: false,
+  },
   currentPage: 1,
   totalPages: 0,
   totalResults: 0,
@@ -10,13 +16,16 @@ export const state = {
   originalGames: [],
   activeGame: null,
   bookmarks: [],
+  topGames: [],
 };
 
 export const getGames = async function (page = 1) {
   try {
     state.currentPage = page;
+
+    const sort = state.search.sortRating ? "&ordering=-rating" : "";
     const response = await fetch(
-      `https://api.rawg.io/api/games?key=${API_KEY}&page_size=${state.resultsPerPage}&${page ? `page=${state.currentPage}` : ""}`,
+      `https://api.rawg.io/api/games?key=${API_KEY}&page_size=${state.resultsPerPage}&${page ? `page=${state.currentPage}` : ""}${sort}`,
     );
     if (!response.ok) throw new Error("Failed to fetch games data");
     const data = await response.json();
@@ -72,6 +81,26 @@ export const sortGames = function (isSorted) {
     });
   }
 };
+
+// export const sortByRating = async function (page = 1) {
+//   try {
+//     state.currentPage = page;
+
+//     const sort = state.search.sortRating ? "&ordering=-rating" : "";
+//     const url = `https://api.rawg.io/api/games?key=${API_KEY}&${sort}&page=${page}&page_size=${state.resultsPerPage}`;
+
+//     const data = await getJSON(url);
+
+//     state.games = data.results.map((game) => {
+//       return {
+//         ...game,
+//       };
+//     });
+//     return state.games;
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
 
 export const getGameDetails = async function (gameId) {
   try {
