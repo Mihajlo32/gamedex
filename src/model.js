@@ -7,6 +7,7 @@ export const state = {
     results: [],
     page: 1,
     sortRating: false,
+    isSort: false,
   },
   currentPage: 1,
   totalPages: 0,
@@ -70,37 +71,21 @@ export const searchGames = async function (query, page = 1) {
   }
 };
 
-export const sortGames = function (isSorted) {
-  if (isSorted) {
-    state.games = [...state.originalGames];
-  } else {
-    state.games.sort((a, b) => {
-      if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
-      if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
-      return 0;
-    });
-  }
+export const sortGames = async function (page = 1) {
+  state.currentPage = page;
+  const sort = state.search.isSort ? "&ordering=name" : "";
+  const response = await fetch(
+    `https://api.rawg.io/api/games?key=${API_KEY}&page_size=${state.resultsPerPage}&${page ? `page=${state.currentPage}` : ""}${sort}`,
+  );
+
+  const data = await response.json();
+  state.games = data.results.map((game) => {
+    return {
+      ...game,
+      isBookmarked: state.bookmarks.some((b) => b.id === game.id),
+    };
+  });
 };
-
-// export const sortByRating = async function (page = 1) {
-//   try {
-//     state.currentPage = page;
-
-//     const sort = state.search.sortRating ? "&ordering=-rating" : "";
-//     const url = `https://api.rawg.io/api/games?key=${API_KEY}&${sort}&page=${page}&page_size=${state.resultsPerPage}`;
-
-//     const data = await getJSON(url);
-
-//     state.games = data.results.map((game) => {
-//       return {
-//         ...game,
-//       };
-//     });
-//     return state.games;
-//   } catch (err) {
-//     console.error(err);
-//   }
-// };
 
 export const getGameDetails = async function (gameId) {
   try {

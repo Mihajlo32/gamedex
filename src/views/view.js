@@ -317,5 +317,16 @@ class View {
       handler();
     });
   }
+
+  toggleActiveButtonSortRatin(isActive) {
+    const btn = document.querySelector(".sort--rating");
+    if (isActive) {
+      btn.classList.add("sort-rating-active");
+      btn.textContent = "Sort By Rating⬆️";
+    } else {
+      btn.classList.remove("sort-rating-active");
+      btn.textContent = "Sort By Rating⬇️";
+    }
+  }
 }
 export default new View();

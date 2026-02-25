@@ -1,10 +1,10 @@
 import * as model from "./model.js";
 import view from "./views/view.js";
-let isSort = false;
-const controller = async function (goToPage = 1) {
-  isSort = false; // Resetiraj sortiranje prilikom inicijalnog učitavanja
-  await model.getGames(goToPage);
 
+const controller = async function (goToPage = 1) {
+  // Resetiraj sortiranje prilikom inicijalnog učitavanja
+  await model.getGames(goToPage);
+  view.toggleActiveButtonSortRatin(model.state.search.sortRating);
   // console.log(model.games);
 
   view.render(
@@ -35,9 +35,10 @@ const searchController = async function (goToPage = 1) {
 
 const controllerPagination = async function (goToPage) {
   try {
-    isSort = false; // Resetiraj sortiranje prilikom promene stranice
     if (model.state.search.query) {
       await model.searchGames(model.state.search.query, goToPage);
+    } else if (model.state.search.isSort) {
+      await model.sortGames(goToPage);
     } else {
       await model.getGames(goToPage);
     }
@@ -52,13 +53,22 @@ const controllerPagination = async function (goToPage) {
   }
 };
 
-const controlSort = function () {
+const controlSort = async function () {
   // 1. Sortiraj podatke koji su već u modelu
-  model.sortGames(isSort);
+  model.state.search.isSort = !model.state.search.isSort;
+  model.state.search.sortRating = false;
+  view.toggleActiveButtonSortRatin(model.state.search.sortRating);
 
-  isSort = !isSort; // Prebaci stanje sortiranja
+  await model.sortGames();
 
+  // Prebaci stanje sortiranja
   // 2. Odmah ih renderuj ponovo (bez fetch-a!)
+
+  // view.render(
+  //   model.state.games,
+  //   model.state.currentPage,
+  //   model.state.totalPages,
+  // );
   view.render(
     model.state.games,
     model.state.currentPage,
@@ -69,10 +79,12 @@ const controlSort = function () {
 const controlSortRating = async function () {
   try {
     model.state.search.sortRating = !model.state.search.sortRating;
-
+    model.state.search.isSort = false;
     model.state.currentPage = 1;
 
     await model.getGames();
+    view.toggleActiveButtonSortRatin(model.state.search.sortRating);
+
     view.render(
       model.state.games,
       model.state.currentPage,

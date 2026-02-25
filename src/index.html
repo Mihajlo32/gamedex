@@ -17,6 +17,34 @@
   <body>
     <header>
       <h1>GameDex</h1>
+      <button class="ham-mani hidden">
+        <svg
+          width="25px"
+          height="25px"
+          viewBox="0 0 48 48"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title>menu-hamburger</title>
+          <g id="Layer_2" data-name="Layer 2">
+            <g id="invisible_box" data-name="invisible box">
+              <rect width="24" height="24" fill="none" />
+            </g>
+            <g id="icons_Q2" data-name="icons Q2">
+              <g>
+                <path
+                  d="M42,12a2,2,0,0,1-2,2H8a2,2,0,0,1-2-2H6a2,2,0,0,1,2-2H40a2,2,0,0,1,2,2Z"
+                />
+                <path
+                  d="M42,24a2,2,0,0,1-2,2H8a2,2,0,0,1-2-2H6a2,2,0,0,1,2-2H40a2,2,0,0,1,2,2Z"
+                />
+                <path
+                  d="M42,36a2,2,0,0,1-2,2H8a2,2,0,0,1-2-2H6a2,2,0,0,1,2-2H40a2,2,0,0,1,2,2Z"
+                />
+              </g>
+            </g>
+          </g>
+        </svg>
+      </button>
       <form class="search-box">
         <input type="text" id="searchInput" placeholder="Pretraži igre..." />
         <button id="searchBtn">Traži</button>
@@ -25,7 +53,7 @@
 
     <main>
       <div class="controls">
-        <button class="sort--rating">Sort By Rating</button><br />
+        <button class="sort--rating"></button><br />
         <button class="sort-btn" data-sort="name">Sortiraj A-Z ↓</button>
         <div class="bockmark">
           <button class="btn--bookmark--show" id="bookmarkBtn">
@@ -68,5 +96,6 @@
         </div>
       </div>
     </main>
+    <script src="../src/hambureger.js"></script>
   </body>
 </html>
