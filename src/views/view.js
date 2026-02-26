@@ -13,7 +13,7 @@ class View {
   constructor() {
     this._hideSugg();
     this.addHandlerHamManu();
-    this.closeHamManu();
+    this.closeHamMenu();
   }
   render(data, page, totalPages) {
     if (!data || (Array.isArray(data) && data.length === 0))
@@ -406,12 +406,21 @@ class View {
     });
   }
 
-  closeHamManu() {
+  closeHamMenu() {
     const manu = document.querySelector(".controls");
-    manu.addEventListener("click", function (e) {
+
+    window.addEventListener("click", function (e) {
+      // 1. Proveri da li je kliknuto dugme za zatvaranje (tvoj postojeći kod)
       const btnClose = e.target.closest(".close--ham--manu");
-      if (!btnClose) return;
-      manu.style.transform = "translateX(-100%)";
+
+      // 2. Proveri da li je kliknuto dugme koje OTVARA meni (hamburger ikonica)
+      // Ovo je bitno da se meni ne bi zatvorio u istoj sekundi kada pokušaš da ga otvoriš
+      const btnOpen = e.target.closest(".ham-mani"); // Zameni sa svojom klasom za otvaranje
+
+      // 3. Logika: Ako je kliknuto X ILI ako klik nije unutar menija (i nije na dugme za otvaranje)
+      if (btnClose || (!manu.contains(e.target) && !btnOpen)) {
+        manu.style.transform = "translateX(-100%)";
+      }
     });
   }
 }
