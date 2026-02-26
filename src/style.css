@@ -351,6 +351,7 @@ svg {
     text-align: center;
   }
   .controls {
+    gap: 20px;
     justify-content: start;
     align-items: start;
     text-align: center;
@@ -366,5 +367,6 @@ svg {
   }
   .close--ham--manu {
     display: inline;
+    align-self: center;
   }
 }
