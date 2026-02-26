@@ -43,6 +43,8 @@ const controllerPagination = async function (goToPage) {
       await model.searchGames(model.state.search.query, goToPage);
     } else if (model.state.search.isSort) {
       await model.sortGames(goToPage);
+    } else if (model.state.search.sortRating) {
+      await model.sortGamesRating(goToPage);
     } else {
       await model.getGames(goToPage);
     }
@@ -90,8 +92,8 @@ const controlSortRating = async function () {
     model.state.search.isSort = false;
     model.state.currentPage = 1;
 
-    await model.getGames();
     view.toggleActiveButtonSortRatin(model.state.search.sortRating);
+    await model.sortGamesRating();
 
     view.render(
       model.state.games,
