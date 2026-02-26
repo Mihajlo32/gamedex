@@ -74,7 +74,7 @@ export const sortGames = async function (page = 1) {
   state.currentPage = page;
   const sort = state.search.isSort ? "&ordering=name" : "";
   const response = await fetch(
-    `https://api.rawg.io/api/games?key=${API_KEY}&page_size=${state.resultsPerPage}&${page ? `page=${state.currentPage}` : ""}${sort}&metacritic=92,150`,
+    `https://api.rawg.io/api/games?key=${API_KEY}&page_size=${state.resultsPerPage}&${page ? `page=${state.currentPage}` : ""}${sort}&metacritic=1,100`,
   );
 
   const data = await response.json();
