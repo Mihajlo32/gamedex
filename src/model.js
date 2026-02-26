@@ -130,4 +130,21 @@ const init = function () {
   if (storage) state.bookmarks = JSON.parse(storage);
 };
 
+export const getSuggetstions = async function (query) {
+  try {
+    if (query === 0) return;
+    const url = `https://api.rawg.io/api/games?key=${API_KEY}&page_size=${state.resultsPerPage}&search=${query}`;
+
+    const data = await getJSON(url);
+
+    return data.results.map((game) => {
+      return {
+        id: game.id,
+        name: game.name,
+      };
+    });
+  } catch (err) {
+    console.error(err);
+  }
+};
 init();

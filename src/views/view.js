@@ -4,11 +4,17 @@ class View {
   _perentEl = document.querySelector("#game-container");
   _paginationEl = document.querySelector(".pagination-container");
   _searchEl = document.querySelector(".search-box");
+  _suggestionElement = document.querySelector(".search-suggestions");
   _bookmarkEl = document.querySelector(".bookmarks__list");
 
   _errorMessage = "No games found. Please try a different search.";
   _data;
 
+  constructor() {
+    this._hideSugg();
+    this.addHandlerHamManu();
+    this.closeHamManu();
+  }
   render(data, page, totalPages) {
     if (!data || (Array.isArray(data) && data.length === 0))
       return this.renderError();
@@ -327,6 +333,86 @@ class View {
       btn.classList.remove("sort-rating-active");
       btn.textContent = "Sort By Rating⬇️";
     }
+  }
+
+  addHandlerSuggestions(handler) {
+    const input = this._searchEl.querySelector("#searchInput");
+
+    input.addEventListener("input", () => {
+      const query = input.value;
+
+      if (!query) {
+        this._suggestionElement.classList.add("hidden");
+        return;
+      }
+
+      handler(query);
+    });
+  }
+
+  renderSugg(data) {
+    if (!data || data.length === 0) {
+      this._suggestionElement.classList.add("hidden");
+      return;
+    }
+    const markup = data
+      .map(
+        (item) =>
+          `<li class="suggestion-item" data-id="${item.id}">${item.name}</li>`,
+      )
+      .join("");
+
+    this._suggestionElement.innerHTML = markup;
+    this._suggestionElement.classList.remove("hidden");
+  }
+  _hideSugg() {
+    window.addEventListener("click", (e) => {
+      if (!this._suggestionElement.contains(e.target)) {
+        this._suggestionElement.classList.add("hidden");
+      }
+    });
+  }
+  addHandleClikcSug(handler) {
+    this._suggestionElement.addEventListener("click", (e) => {
+      const sugItem = e.target.closest(".suggestion-item");
+      if (!sugItem) return;
+      const input = this._searchEl.querySelector("#searchInput");
+      input.value = "";
+      const query = sugItem.textContent;
+      this._suggestionElement.classList.add("hidden");
+      handler(query);
+    });
+  }
+
+  // View.js (ili tvoj konkretni View)
+
+  renderSpinner() {
+    const markup = `
+    <div class="spinner">
+    <!--By Sam Herbert (@sherb), for everyone. More @ http://goo.gl/7AJzbL--><!--Todo: add easing--><svg viewBox="0 0 57 60" xmlns="http://www.w3.org/2000/svg" stroke="#00cc6a"><g fill="none" fill-rule="evenodd"><g transform="translate(1 1)" stroke-width="3"><circle cx="5" cy="50" r="5"><animate attributeName="cy" begin="0s" dur="2.2s" values="50;5;50;50" calcMode="linear" repeatCount="indefinite"/><animate attributeName="cx" begin="0s" dur="2.2s" values="5;27;49;5" calcMode="linear" repeatCount="indefinite"/></circle><circle cx="27" cy="5" r="5"><animate attributeName="cy" begin="0s" dur="2.2s" from="5" to="5" values="5;50;50;5" calcMode="linear" repeatCount="indefinite"/><animate attributeName="cx" begin="0s" dur="2.2s" from="27" to="27" values="27;49;5;27" calcMode="linear" repeatCount="indefinite"/></circle><circle cx="49" cy="50" r="5"><animate attributeName="cy" begin="0s" dur="2.2s" values="50;50;5;50" calcMode="linear" repeatCount="indefinite"/><animate attributeName="cx" from="49" to="49" begin="0s" dur="2.2s" values="49;5;27;49" calcMode="linear" repeatCount="indefinite"/></circle></g></g></svg>
+      
+    </div>
+  `;
+
+    this.clear(); // Funkcija koja radi: this._parentElement.innerHTML = '';
+    this._perentEl.insertAdjacentHTML("afterbegin", markup);
+  }
+
+  addHandlerHamManu() {
+    const hamManu = document.querySelector(".ham-mani");
+    hamManu.addEventListener("click", function () {
+      const manu = document.querySelector(".controls");
+      manu.style.transform = "translateX(0%)";
+    });
+  }
+
+  closeHamManu() {
+    const manu = document.querySelector(".controls");
+    manu.addEventListener("click", function (e) {
+      const btnClose = e.target.closest(".close--ham--manu");
+      if (!btnClose) return;
+      manu.style.transform = "translateX(-100%)";
+    });
   }
 }
 export default new View();

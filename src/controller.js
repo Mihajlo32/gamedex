@@ -2,9 +2,11 @@ import * as model from "./model.js";
 import view from "./views/view.js";
 
 const controller = async function (goToPage = 1) {
+  view.renderSpinner();
   // Resetiraj sortiranje prilikom inicijalnog učitavanja
   await model.getGames(goToPage);
   view.toggleActiveButtonSortRatin(model.state.search.sortRating);
+
   // console.log(model.games);
 
   view.render(
@@ -18,6 +20,8 @@ const controller = async function (goToPage = 1) {
 const searchController = async function (goToPage = 1) {
   try {
     // Učitaj sve igre da bismo mogli da označimo koje su bookmarkovane
+    view.renderSpinner();
+
     const query = view.getQuery();
     if (!query) return;
 
@@ -55,6 +59,8 @@ const controllerPagination = async function (goToPage) {
 
 const controlSort = async function () {
   // 1. Sortiraj podatke koji su već u modelu
+  view.renderSpinner();
+
   model.state.search.isSort = !model.state.search.isSort;
   model.state.search.sortRating = false;
   view.toggleActiveButtonSortRatin(model.state.search.sortRating);
@@ -78,6 +84,8 @@ const controlSort = async function () {
 
 const controlSortRating = async function () {
   try {
+    view.renderSpinner();
+
     model.state.search.sortRating = !model.state.search.sortRating;
     model.state.search.isSort = false;
     model.state.currentPage = 1;
@@ -97,6 +105,8 @@ const controlSortRating = async function () {
 
 const controlGameDetails = async function (gameId) {
   try {
+    // view.renderSpinner();
+
     await model.getGameDetails(gameId);
 
     view.renderGameDetails(model.state.activeGame);
@@ -137,21 +147,53 @@ const controllerRemoveBookFormList = function (id) {
   view.update(model.state.games);
 };
 
+const coontrolSuug = async function (query) {
+  const sugg = await model.getSuggetstions(query);
+
+  view.renderSugg(sugg);
+};
+
+const controlSugSearch = async function (query, goToPage = 1) {
+  try {
+    view.renderSpinner();
+
+    await model.searchGames(query, goToPage);
+    view.render(
+      model.state.games,
+      model.state.currentPage,
+      model.state.totalPages,
+    );
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const init = function () {
   controller();
   view.bindPaginationHandler(controllerPagination);
+
   view.bindSearchHandler(searchController);
 
   view.handlerSort(controlSort);
 
   view.addHandelrDetails(controlGameDetails);
+
   view.addHandlerCloseModal(controlCloseModal);
+
   view.addHandelrBookmark(controlBookmark);
 
   view.addHandlerShowBookmarks(controlShowBookmarks);
+
   view.addHandlerCloseBookmark(controllCloseBook);
+
   view.addHandlerRemoveFromBookmarkList(controllerRemoveBookFormList);
+
   view.addHandlerClickBook(controlGameDetails);
+
   view.addHandlerSortByRating(controlSortRating);
+
+  view.addHandlerSuggestions(coontrolSuug);
+
+  view.addHandleClikcSug(controlSugSearch);
 };
 init();
