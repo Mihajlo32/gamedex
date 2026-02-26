@@ -330,6 +330,10 @@ svg {
   animation: rotate 2s infinite linear;
 }
 
+.controls-phone {
+  transform: translateX(0%) !important;
+}
+
 @keyframes rotate {
   0% {
     transform: rotate(0);
@@ -355,8 +359,8 @@ svg {
     top: 100;
     left: 0;
     transition: all 0.4s ease;
+    /* display: none; */
     transform: translateX(-100%);
-
     z-index: 100;
     padding: 20px;
   }

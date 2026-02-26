@@ -13,7 +13,7 @@ class View {
   constructor() {
     this._hideSugg();
     this.addHandlerHamManu();
-    this.closeHamMenu();
+    this.closeHam();
   }
   render(data, page, totalPages) {
     if (!data || (Array.isArray(data) && data.length === 0))
@@ -402,11 +402,11 @@ class View {
     const hamManu = document.querySelector(".ham-mani");
     hamManu.addEventListener("click", function () {
       const manu = document.querySelector(".controls");
-      manu.style.transform = "translateX(0%)";
+      manu.classList.add("controls-phone");
     });
   }
 
-  closeHamMenu() {
+  closeHam() {
     const manu = document.querySelector(".controls");
 
     window.addEventListener("click", function (e) {
@@ -419,7 +419,7 @@ class View {
 
       // 3. Logika: Ako je kliknuto X ILI ako klik nije unutar menija (i nije na dugme za otvaranje)
       if (btnClose || (!manu.contains(e.target) && !btnOpen)) {
-        manu.style.transform = "translateX(-100%)";
+        manu.classList.remove("controls-phone");
       }
     });
   }
