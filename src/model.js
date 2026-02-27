@@ -18,6 +18,7 @@ export const state = {
   activeGame: null,
   bookmarks: [],
   topGames: [],
+  ganders: [],
 };
 
 export const getGames = async function (page = 1) {
@@ -49,6 +50,7 @@ export const searchGames = async function (query, page = 1) {
   try {
     state.currentPage = page;
     state.query = query;
+
     const response = await fetch(
       `https://api.rawg.io/api/games?key=${API_KEY}&search=${state.query}&search=${query}&page=${page}&page_size=${state.resultsPerPage}`,
     );
@@ -162,5 +164,19 @@ export const getSuggetstions = async function (query) {
   } catch (err) {
     console.error(err);
   }
+};
+
+export const getGanders = async function () {
+  const response = await fetch(
+    `https://api.rawg.io/api/genres?key=${API_KEY}&page_size=50`,
+  );
+  if (!response.ok) throw new Error("Failed to fetch games data");
+  const data = await response.json();
+  state.ganders = data.results.map((gen) => {
+    return {
+      id: gen.id,
+      name: gen.name,
+    };
+  });
 };
 init();

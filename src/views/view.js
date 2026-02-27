@@ -6,7 +6,7 @@ class View {
   _searchEl = document.querySelector(".search-box");
   _suggestionElement = document.querySelector(".search-suggestions");
   _bookmarkEl = document.querySelector(".bookmarks__list");
-
+  _controls = document.querySelector(".controls");
   _errorMessage = "No games found. Please try a different search.";
   _data;
 
@@ -420,6 +420,73 @@ class View {
       // 3. Logika: Ako je kliknuto X ILI ako klik nije unutar menija (i nije na dugme za otvaranje)
       if (btnClose || (!manu.contains(e.target) && !btnOpen)) {
         manu.classList.remove("controls-phone");
+      }
+    });
+  }
+
+  generateMarkupGenres(data) {
+    const markup = data
+      .map(
+        (gen) => `
+      <li class="genre-item " data-slug="${gen.name}">
+        ${gen.name}
+      </li>
+    `,
+      )
+      .join("");
+    return markup;
+  }
+
+  renderGenres(genres) {
+    const markup = this.generateMarkupGenres(genres);
+    document.querySelector(".genres-list-container").innerHTML = markup;
+  }
+
+  addHandlerOpenGeners(handler) {
+    const showGenres = document.querySelector(".open--geners");
+
+    if (!showGenres) return;
+    showGenres.addEventListener("click", function () {
+      console.log(showGenres);
+      const genBox = document.querySelector(".genres-box");
+      genBox.classList.remove("hidden");
+      document.body.classList.add("stop-scrolling");
+
+      handler();
+    });
+  }
+
+  clearGenres() {
+    const genBox = document.querySelector(".genres-box");
+    genBox.classList.add("hidden");
+  }
+
+  addHandlerCloseGenres(handler) {
+    const genBox = document.querySelector(".genres-box");
+    genBox.addEventListener("click", function (e) {
+      const btnClose = e.target.closest(".btn--close--genres");
+      if (!btnClose) return;
+      document.body.classList.remove("stop-scrolling");
+
+      handler();
+    });
+
+    const over = document.querySelector(".overlay");
+    over.addEventListener("click", function (e) {
+      if (e.target.classList.contains("overlay")) {
+        document.body.classList.remove("stop-scrolling");
+
+        handler();
+      }
+    });
+
+    window.addEventListener("keydown", function (e) {
+      const genBox = document.querySelector(".genres-box");
+      // Zatvaraj samo ako prozor NIJE sakriven
+      if (e.key === "Escape" && !genBox.classList.contains("hidden")) {
+        document.body.classList.remove("stop-scrolling");
+
+        handler();
       }
     });
   }

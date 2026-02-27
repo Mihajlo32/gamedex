@@ -334,6 +334,43 @@ svg {
   transform: translateX(0%) !important;
 }
 
+.genres-list-container {
+  /* position: absolute; */
+  /* display: none; */
+  /* top: 100; */
+  /* left: 0; */
+
+  padding: 40px;
+  text-align: center;
+  display: grid;
+  column-gap: 5px;
+  row-gap: 5px;
+  grid-template-columns: 1fr 1fr 1fr;
+  list-style: none;
+  align-items: center;
+}
+.genre-item {
+  background-color: #00ff87;
+  border-radius: 1000px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.genres-box {
+  /* position: relative; */
+  /* background-color: #333; */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.btn--close--genres {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 5px;
+}
 @keyframes rotate {
   0% {
     transform: rotate(0);

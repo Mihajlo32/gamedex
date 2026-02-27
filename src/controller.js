@@ -14,7 +14,6 @@ const controller = async function (goToPage = 1) {
     model.state.currentPage,
     model.state.totalPages,
   );
-  window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
 const searchController = async function (goToPage = 1) {
@@ -23,7 +22,10 @@ const searchController = async function (goToPage = 1) {
     view.renderSpinner();
 
     const query = view.getQuery();
-    if (!query) return;
+
+    if (!query) {
+      await model.getGames();
+    }
 
     await model.searchGames(query, goToPage);
 
@@ -32,6 +34,8 @@ const searchController = async function (goToPage = 1) {
       model.state.currentPage,
       model.state.totalPages,
     );
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   } catch (err) {
     console.error(err);
   }
@@ -67,7 +71,7 @@ const controlSort = async function () {
   model.state.search.sortRating = false;
   view.toggleActiveButtonSortRatin(model.state.search.sortRating);
 
-  await model.sortGames();
+  await model.sortGames(1);
 
   // Prebaci stanje sortiranja
   // 2. Odmah ih renderuj ponovo (bez fetch-a!)
@@ -100,6 +104,7 @@ const controlSortRating = async function () {
       model.state.currentPage,
       model.state.totalPages,
     );
+    window.scrollTo({ top: 0, behavior: "smooth" });
   } catch (err) {
     console.error(err);
   }
@@ -170,6 +175,21 @@ const controlSugSearch = async function (query, goToPage = 1) {
   }
 };
 
+const controlGenres = async function () {
+  try {
+    await model.getGanders();
+
+    console.log(model.state.ganders);
+    view.renderGenres(model.state.ganders);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const controlCloseGenres = function () {
+  view.clearGenres();
+};
+
 const init = function () {
   controller();
   view.bindPaginationHandler(controllerPagination);
@@ -197,5 +217,9 @@ const init = function () {
   view.addHandlerSuggestions(coontrolSuug);
 
   view.addHandleClikcSug(controlSugSearch);
+
+  view.addHandlerOpenGeners(controlGenres);
+
+  view.addHandlerCloseGenres(controlCloseGenres);
 };
 init();
