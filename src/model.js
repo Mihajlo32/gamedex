@@ -4,6 +4,7 @@ import { getJSON } from "./halpers";
 export const state = {
   search: {
     query: "",
+    genre: "",
     results: [],
     page: 1,
     sortRating: false,
@@ -49,7 +50,7 @@ export const getGames = async function (page = 1) {
 export const searchGames = async function (query, page = 1) {
   try {
     state.currentPage = page;
-    state.query = query;
+    state.search.query = query;
 
     const response = await fetch(
       `https://api.rawg.io/api/games?key=${API_KEY}&search=${state.query}&search=${query}&page=${page}&page_size=${state.resultsPerPage}`,
@@ -176,7 +177,29 @@ export const getGanders = async function () {
     return {
       id: gen.id,
       name: gen.name,
+      slug: gen.slug,
     };
   });
+};
+
+export const loadGamesGanders = async function (gener, page = 1) {
+  try {
+    state.currentPage = page;
+    state.search.genre = gener;
+    const res = await fetch(
+      `https://api.rawg.io/api/games?genres=${gener}&key=${API_KEY}&page_size=${state.resultsPerPage}&page=${page}`,
+    );
+    const data = await res.json();
+
+    state.games = data.results.map((game) => {
+      return {
+        ...game,
+        isBookmarked: state.bookmarks.some((b) => b.id === game.id),
+      };
+    });
+    state.totalPages = Math.ceil(data.count / state.resultsPerPage);
+  } catch (err) {
+    console.error(err);
+  }
 };
 init();

@@ -278,7 +278,7 @@ svg {
 }
 .controls {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   justify-content: space-around;
   align-items: start;
 }
@@ -388,6 +388,7 @@ svg {
     text-align: center;
   }
   .controls {
+    flex-direction: column;
     gap: 20px;
     justify-content: start;
     align-items: start;
@@ -405,5 +406,9 @@ svg {
   .close--ham--manu {
     display: inline;
     align-self: center;
+  }
+  .genres-list-container {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 }

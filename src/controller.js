@@ -49,6 +49,8 @@ const controllerPagination = async function (goToPage) {
       await model.sortGames(goToPage);
     } else if (model.state.search.sortRating) {
       await model.sortGamesRating(goToPage);
+    } else if (model.state.search.genre) {
+      await model.loadGamesGanders(model.state.search.genre, goToPage);
     } else {
       await model.getGames(goToPage);
     }
@@ -190,6 +192,17 @@ const controlCloseGenres = function () {
   view.clearGenres();
 };
 
+const controlLoadGenres = async function (genres, goToPage = 1) {
+  view.renderSpinner();
+  await model.loadGamesGanders(genres, goToPage);
+  view.render(
+    model.state.games,
+    model.state.currentPage,
+    model.state.totalPages,
+  );
+  view.clearGenres();
+};
+
 const init = function () {
   controller();
   view.bindPaginationHandler(controllerPagination);
@@ -221,5 +234,7 @@ const init = function () {
   view.addHandlerOpenGeners(controlGenres);
 
   view.addHandlerCloseGenres(controlCloseGenres);
+
+  view.addHandlerLoadGenres(controlLoadGenres);
 };
 init();

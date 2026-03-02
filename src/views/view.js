@@ -428,7 +428,7 @@ class View {
     const markup = data
       .map(
         (gen) => `
-      <li class="genre-item " data-slug="${gen.name}">
+      <li class="genre-item " data-name="${gen.slug}">
         ${gen.name}
       </li>
     `,
@@ -459,6 +459,7 @@ class View {
   clearGenres() {
     const genBox = document.querySelector(".genres-box");
     genBox.classList.add("hidden");
+    document.body.classList.remove("stop-scrolling");
   }
 
   addHandlerCloseGenres(handler) {
@@ -488,6 +489,17 @@ class View {
 
         handler();
       }
+    });
+  }
+
+  addHandlerLoadGenres(handler) {
+    const gen = document.querySelector(".genres-box");
+    gen.addEventListener("click", function (e) {
+      const genItem = e.target.closest(".genre-item");
+      if (!genItem) return;
+      const name = genItem.dataset.name.toLowerCase();
+      console.log(name);
+      handler(name);
     });
   }
 }
