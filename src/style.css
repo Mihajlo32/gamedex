@@ -357,6 +357,7 @@ svg {
 }
 
 .genres-box {
+  overflow: auto;
   /* position: relative; */
   /* background-color: #333; */
   position: absolute;

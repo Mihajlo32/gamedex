@@ -450,7 +450,7 @@ class View {
       console.log(showGenres);
       const genBox = document.querySelector(".genres-box");
       genBox.classList.remove("hidden");
-      document.body.classList.add("stop-scrolling");
+      // document.body.classList.add("stop-scrolling");
 
       handler();
     });
