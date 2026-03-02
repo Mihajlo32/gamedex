@@ -183,6 +183,7 @@ const controlGenres = async function () {
 
     console.log(model.state.ganders);
     view.renderGenres(model.state.ganders);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   } catch (err) {
     console.error(err);
   }
