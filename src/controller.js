@@ -194,6 +194,7 @@ const controlCloseGenres = function () {
 
 const controlLoadGenres = async function (genres, goToPage = 1) {
   view.renderSpinner();
+
   await model.loadGamesGanders(genres, goToPage);
   view.render(
     model.state.games,
@@ -202,6 +203,7 @@ const controlLoadGenres = async function (genres, goToPage = 1) {
   );
   view.clearGenres();
 };
+// Function to go back one page in history
 
 const init = function () {
   controller();

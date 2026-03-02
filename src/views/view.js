@@ -451,6 +451,7 @@ class View {
       const genBox = document.querySelector(".genres-box");
       genBox.classList.remove("hidden");
       document.body.classList.add("stop-scrolling");
+      window.scrollTo({ top: 0, behavior: "smooth" });
 
       handler();
     });
@@ -498,7 +499,8 @@ class View {
       const genItem = e.target.closest(".genre-item");
       if (!genItem) return;
       const name = genItem.dataset.name.toLowerCase();
-      console.log(name);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
       handler(name);
     });
   }
