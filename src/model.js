@@ -88,6 +88,7 @@ export const sortGames = async function (page = 1) {
       isBookmarked: state.bookmarks.some((b) => b.id === game.id),
     };
   });
+  state.totalPages = Math.ceil(data.count / state.resultsPerPage);
 };
 export const sortGamesRating = async function (page = 1) {
   state.currentPage = page;
@@ -104,6 +105,7 @@ export const sortGamesRating = async function (page = 1) {
       isBookmarked: state.bookmarks.some((b) => b.id === game.id),
     };
   });
+  state.totalPages = Math.ceil(data.count / state.resultsPerPage);
 };
 
 export const getGameDetails = async function (gameId) {

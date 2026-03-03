@@ -388,6 +388,9 @@ svg {
   .main {
     text-align: center;
   }
+  input {
+    margin-bottom: 20px;
+  }
   .controls {
     flex-direction: column;
     gap: 20px;
@@ -409,7 +412,27 @@ svg {
     align-self: center;
   }
   .genres-list-container {
+    padding: 0;
     display: grid;
     grid-template-columns: 1fr;
+    width: 50%;
+    justify-self: center;
+  }
+  .genres-box {
+    text-align: center;
+  }
+
+  .genre-item {
+    width: 100%;
+
+    justify-self: center;
+  }
+  .btn--close--genres {
+    position: relative;
+
+    margin: 5px;
+  }
+  .home {
+    display: none;
   }
 }

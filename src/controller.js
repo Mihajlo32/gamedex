@@ -3,8 +3,11 @@ import view from "./views/view.js";
 
 const controller = async function (goToPage = 1) {
   view.renderSpinner();
+
   // Resetiraj sortiranje prilikom inicijalnog učitavanja
   await model.getGames(goToPage);
+  model.state.search.sortRating = false;
+
   view.toggleActiveButtonSortRatin(model.state.search.sortRating);
 
   // console.log(model.games);
@@ -20,7 +23,8 @@ const searchController = async function (goToPage = 1) {
   try {
     // Učitaj sve igre da bismo mogli da označimo koje su bookmarkovane
     view.renderSpinner();
-
+    model.state.search.sortRating = false;
+    view.toggleActiveButtonSortRatin(model.state.search.sortRating);
     const query = view.getQuery();
 
     if (!query) {
@@ -239,5 +243,7 @@ const init = function () {
   view.addHandlerCloseGenres(controlCloseGenres);
 
   view.addHandlerLoadGenres(controlLoadGenres);
+
+  view.addHandlerGoBack(controller);
 };
 init();

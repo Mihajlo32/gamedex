@@ -504,5 +504,12 @@ class View {
       handler(name);
     });
   }
+
+  addHandlerGoBack(handler) {
+    const btn = document.querySelector(".home");
+    btn.addEventListener("click", function (e) {
+      handler();
+    });
+  }
 }
 export default new View();
