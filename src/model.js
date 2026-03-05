@@ -76,7 +76,7 @@ export const searchGames = async function (query, page = 1) {
 
 export const sortGames = async function (page = 1) {
   state.currentPage = page;
-  const sort = state.search.isSort ? "&ordering=name" : "";
+  const sort = state.search.isSort ? "&ordering=name" : "&ordering=-name";
   const response = await fetch(
     `https://api.rawg.io/api/games?key=${API_KEY}&page_size=${state.resultsPerPage}&${page ? `page=${state.currentPage}` : ""}${sort}&metacritic=1,100`,
   );
@@ -93,7 +93,9 @@ export const sortGames = async function (page = 1) {
 };
 export const sortGamesRating = async function (page = 1) {
   state.currentPage = page;
-  const sort = state.search.sortRating ? "&ordering=-rating" : "";
+  const sort = state.search.sortRating
+    ? "&ordering=-rating"
+    : "&ordering=rating";
   const response = await fetch(
     `https://api.rawg.io/api/games?key=${API_KEY}&page_size=${state.resultsPerPage}&${page ? `page=${state.currentPage}` : ""}${sort}`,
   );

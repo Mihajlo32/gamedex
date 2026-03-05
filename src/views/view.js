@@ -536,6 +536,7 @@ class View {
       const form = document.querySelector(".add-game");
       form.classList.remove("hidden");
       window.scrollTo({ top: 0, behavior: "smooth" });
+      document.body.classList.add("stop-scrolling");
     });
   }
 
@@ -546,6 +547,7 @@ class View {
       if (!btn) return;
       console.log(btn);
       close.classList.add("hidden");
+      document.body.classList.remove("stop-scrolling");
     });
   }
   addHandelrAddGame(handler) {

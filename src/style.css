@@ -48,6 +48,9 @@ button {
 button:hover {
   background-color: #00cc6a;
 }
+.head-title {
+  cursor: pointer;
+}
 
 /* Grid sistem za kartice */
 .game-grid {
@@ -366,6 +369,7 @@ svg {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  color: #1a1a1a;
 }
 
 .btn--close--genres {
