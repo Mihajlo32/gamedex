@@ -524,8 +524,11 @@ class View {
   }
 
   addHandlerGoBack(handler) {
-    const btn = document.querySelector(".home");
-    btn.addEventListener("click", function (e) {
+    // const btn = document.querySelector(".home");
+    const body = document.querySelector("body");
+    body.addEventListener("click", function (e) {
+      const btnHome = e.target.closest(".home");
+      if (!btnHome) return;
       handler();
     });
   }
