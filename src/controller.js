@@ -128,6 +128,12 @@ const controlGameDetails = async function (gameId) {
   }
 };
 
+const controlAddedGameDetails = function (gameId) {
+  model.getNewGame(gameId);
+
+  view.renderGameDetails(model.state.activeGame);
+};
+
 const controlCloseModal = function () {
   model.state.activeGame = null;
 
@@ -208,6 +214,14 @@ const controlLoadGenres = async function (genres, goToPage = 1) {
   );
   view.clearGenres();
 };
+
+const controlAddGame = function (gameData) {
+  model.addGame(gameData);
+  const allGames = [...model.state.games];
+
+  view.render(allGames, model.state.currentPage, model.state.totalPages);
+};
+
 // Function to go back one page in history
 
 const init = function () {
@@ -245,5 +259,12 @@ const init = function () {
   view.addHandlerLoadGenres(controlLoadGenres);
 
   view.addHandlerGoBack(controller);
+
+  const storage = localStorage.getItem("addGamesByUser");
+  if (storage) model.state.userGames = JSON.parse(storage);
+
+  view.addHandelrAddGame(controlAddGame);
+
+  view.addHandelrAddedDetails(controlAddedGameDetails);
 };
 init();

@@ -107,6 +107,36 @@
         <ul class="genres-list-container"></ul>
         <button class="btn--close--genres">X</button>
       </div>
+      <button class="btn--add--game">+</button>
+      <div class="add-game overlay hidden">
+        <form action="" class="form--add--game">
+          <h2>ADD YOUR GAME</h2>
+          <input type="text" name="name" placeholder="TITLE" />
+          <input
+            type="number"
+            name="rating"
+            min="0"
+            max="5"
+            step="0.1"
+            placeholder="Rating"
+          />
+          <input type="text" name="released" placeholder="Date" />
+          <input
+            type="url"
+            name="image"
+            placeholder="https://primer.com/slika.jpg"
+          />
+          <textarea
+            name="description"
+            id=""
+            placeholder="Description"
+            rows="6"
+            cols="30"
+          ></textarea>
+          <input class="submit" type="submit" />
+        </form>
+        <button class="close-form">X</button>
+      </div>
     </main>
     <script src="../src/hambureger.js"></script>
   </body>

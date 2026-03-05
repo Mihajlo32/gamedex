@@ -20,6 +20,7 @@ export const state = {
   bookmarks: [],
   topGames: [],
   ganders: [],
+  addGamesByUser: [],
 };
 
 export const getGames = async function (page = 1) {
@@ -129,9 +130,11 @@ export const addBookmark = function (game) {
   state.bookmarks.push(game);
 
   const gameInState = state.games.find((g) => g.id === game.id);
+
   if (gameInState) {
     gameInState.isBookmarked = true;
   }
+
   persistBookmarks();
 };
 
@@ -204,4 +207,28 @@ export const loadGamesGanders = async function (gener, page = 1) {
     console.error(err);
   }
 };
+
+export const addGame = function (gameData) {
+  const newGame = {
+    id: Date.now(), // Generišemo ID preko trenutnog vremena
+    name: gameData.name,
+    background_image: gameData.image || "default-image.jpg",
+    rating: gameData.rating || 0,
+    isUserCreated: true,
+    description: gameData.description || "",
+    released: gameData.released,
+    isBookmarked: state.bookmarks.some((b) => b.id === gameData.id),
+  };
+  state.games.unshift(newGame);
+  state.addGamesByUser.unshift(newGame);
+
+  localStorage.setItem("addGamesByUser", JSON.stringify(state.addGamesByUser));
+};
+
+export const getNewGame = function (id) {
+  const data = state.addGamesByUser.filter((g) => g.id === +id);
+
+  state.activeGame = data[0];
+};
+
 init();

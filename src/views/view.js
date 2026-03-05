@@ -14,6 +14,8 @@ class View {
     this._hideSugg();
     this.addHandlerHamManu();
     this.closeHam();
+    this.showAddGameForm();
+    this.closeCloseForm();
   }
   render(data, page, totalPages) {
     if (!data || (Array.isArray(data) && data.length === 0))
@@ -88,7 +90,7 @@ class View {
     return igra
 
       .map((igra) => {
-        return ` <div class="game-card" data-id="${igra.id}">
+        return ` <div class="game-card ${igra.isUserCreated ? "added" : ""}" data-id="${igra.id}">
         
                       <img src="${this._optimizeImageUrl(igra.background_image) || "https://via.placeholder.com/250"}" alt="">
                       <div class="game-info">
@@ -176,6 +178,22 @@ class View {
       }
 
       const card = e.target.closest(".game-card");
+      if (!card) return;
+      if (!card.classList.contains("added")) {
+        const gameId = card.dataset.id;
+        document.body.classList.add("stop-scrolling");
+        handler(gameId);
+      }
+    });
+  }
+
+  addHandelrAddedDetails(handler) {
+    this._perentEl.addEventListener("click", function (e) {
+      if (e.target.classList.contains("btn-bookmark")) {
+        return;
+      }
+
+      const card = e.target.closest(".added");
       if (!card) return;
 
       const gameId = card.dataset.id;
@@ -509,6 +527,36 @@ class View {
     const btn = document.querySelector(".home");
     btn.addEventListener("click", function (e) {
       handler();
+    });
+  }
+
+  showAddGameForm() {
+    const btnAdd = document.querySelector(".btn--add--game");
+    btnAdd.addEventListener("click", function () {
+      const form = document.querySelector(".add-game");
+      form.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+  closeCloseForm() {
+    const close = document.querySelector(".add-game");
+    close.addEventListener("click", function (e) {
+      const btn = e.target.closest(".close-form");
+      if (!btn) return;
+      console.log(btn);
+      close.classList.add("hidden");
+    });
+  }
+  addHandelrAddGame(handler) {
+    const form = document.querySelector(".form--add--game");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const close = document.querySelector(".add-game");
+      const dataArr = [...new FormData(e.currentTarget)];
+      const data = Object.fromEntries(dataArr);
+      close.classList.add("hidden");
+      handler(data);
     });
   }
 }

@@ -188,8 +188,9 @@ svg {
 }
 
 /* Klasa koja će se dodati kada je igra bukmarkovana */
-.btn-bookmark--active {
-  color: #ff4757; /* Crvena ili zlatna boja */
+.btn--bookmark--show {
+  /* height: 10px; */
+  padding: 3px 0px;
 }
 .modal-info {
   display: flex;
@@ -281,6 +282,7 @@ svg {
   /* flex-direction: column; */
   justify-content: space-around;
   align-items: start;
+  margin-bottom: 50px;
 }
 .close--ham--manu {
   display: none;
@@ -371,6 +373,21 @@ svg {
   top: 0;
   right: 0;
   margin: 5px;
+}
+
+.form--add--game {
+  position: absolute;
+  top: 50%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 50%;
+  background-color: #1a1f26;
+  transform: translate(50%, -50%);
+  padding: 20px 5px;
 }
 @keyframes rotate {
   0% {
