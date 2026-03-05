@@ -451,4 +451,8 @@ svg {
     margin: 5px;
     margin-bottom: 30px;
   }
+  .form--add--game {
+    width: 80%;
+    transform: translate(50, -50%);
+  }
 }
